@@ -1,3 +1,6 @@
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
+
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 
@@ -21,28 +24,38 @@ const options = {
 new flatpickr('#datetime-picker', options); //Ініциалізація бібліотеки
 
 let userSelectedDate; //Змінна для зберігання обраної дати
-console.log(userSelectedDate);
 
+const dateTimePicker = document.querySelectorAll('input'); // Отримання input
+console.log(dateTimePicker);
 const startBtn = document.querySelector('button[data-start]'); // Отримання кнопки
+
+startBtn.disabled = true; // Спочатку кнопка деактивована при завантаженні сторінки
 
 startBtn.addEventListener('click', () => { // При натисканні на кнопку починається відлік
     if (userSelectedDate) {
         startCountDown(userSelectedDate);
     }
+    startBtn.disabled = true;
+     dateTimePicker.forEach(input => {
+        input.disabled = true;
+    });
 });
 
 function startCountDown(userSelectedDate) { // Функція для початку відліку часу
     const interval = setInterval(() => {
     const ms = userSelectedDate - Date.now();
       
-    if (ms <= 0) {
-      clearInterval(interval);
+     if (ms <= 0) {
+        clearInterval(interval);
+        dateTimePicker.forEach(input => {
+        input.disabled = false;
+    }); 
     } else {
         const timeVal = convertMs(ms);
-      console.log(`${timeVal.days} days, ${timeVal.hours} hours, ${timeVal.minutes} minutes, ${timeVal.seconds} seconds`);
+      updateUI(timeVal); 
     }
-  }, 1000);
-}
+    }, 1000);
+};
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -58,9 +71,30 @@ function convertMs(ms) {
   // Remaining minutes
   const minutes = Math.floor(((ms % day) % hour) / minute);
   // Remaining seconds
-  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+  const seconds = Math.floor((((ms % day) % hour) % minute) / second);  
 
-  return { days, hours, minutes, seconds };
+    return { days, hours, minutes, seconds };
+};
+
+const dataDays = document.querySelector('[data-days]');
+const dataHours = document.querySelector('[data-hours]');
+const dataMinutes = document.querySelector('[data-minutes]');
+const dataSeconds = document.querySelector('[data-seconds]');
+
+function updateUI(timeVal) {
+    // Оновлення значень на екрані
+    dataDays.textContent = addLeadingZero(timeVal.days);
+    dataHours.textContent = addLeadingZero(timeVal.hours);
+    dataMinutes.textContent = addLeadingZero(timeVal.minutes);
+    dataSeconds.textContent = addLeadingZero(timeVal.seconds);
 }
+
+function addLeadingZero(value) {
+    return String(value).padStart(2, '0');
+};
+
+
+
+
 
 
