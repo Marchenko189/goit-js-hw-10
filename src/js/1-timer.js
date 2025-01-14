@@ -1,19 +1,32 @@
 import iziToast from "izitoast";
-import "izitoast/dist/css/iziToast.min.css";
 
 import flatpickr from "flatpickr";
-import "flatpickr/dist/flatpickr.min.css";
 
 const options = {
   enableTime: true,
+  disableMobile: true,
   time_24hr: true,
+  locale: {
+    weekdays: {
+      shorthand: ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"], 
+      longhand: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    },
+    months: {
+      shorthand: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], 
+      longhand: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"] 
+    }
+  },
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
     userSelectedDate = selectedDates[0]; // Отримання першої обраної дати
 
     if (userSelectedDate <= Date.now()) { //Перевірка валідності дати
-        alert("Please choose a date in the future"); 
+        iziToast.warning({
+        title: "Warning",
+        message: "Please choose a date in the future",
+        position: 'bottomCenter',
+      });
         startBtn.disabled = true; //Якщо дата минула, кнопка деактивована
     } else {
         startBtn.disabled = false; //Якщо дата майбутня, кнопка активована
@@ -26,7 +39,7 @@ new flatpickr('#datetime-picker', options); //Ініциалізація біб�
 let userSelectedDate; //Змінна для зберігання обраної дати
 
 const dateTimePicker = document.querySelectorAll('input'); // Отримання input
-console.log(dateTimePicker);
+
 const startBtn = document.querySelector('button[data-start]'); // Отримання кнопки
 
 startBtn.disabled = true; // Спочатку кнопка деактивована при завантаженні сторінки
@@ -35,9 +48,14 @@ startBtn.addEventListener('click', () => { // При натисканні на �
     if (userSelectedDate) {
         startCountDown(userSelectedDate);
     }
+    iziToast.info({
+        title: "Info",
+        message: "Timer started",
+        position: 'bottomCenter',
+      });
     startBtn.disabled = true;
      dateTimePicker.forEach(input => {
-        input.disabled = true;
+         input.disabled = true;
     });
 });
 
@@ -47,6 +65,11 @@ function startCountDown(userSelectedDate) { // Функція для почат�
       
      if (ms <= 0) {
         clearInterval(interval);
+         iziToast.success({
+        title: "Success",
+        message: "Time over",
+        position: 'bottomCenter',
+      });
         dateTimePicker.forEach(input => {
         input.disabled = false;
     }); 
@@ -92,6 +115,8 @@ function updateUI(timeVal) {
 function addLeadingZero(value) {
     return String(value).padStart(2, '0');
 };
+
+
 
 
 
