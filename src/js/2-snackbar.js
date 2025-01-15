@@ -1,6 +1,5 @@
 import iziToast from "izitoast";
 
-
 document.querySelector('.form').addEventListener('submit', () => {
     event.preventDefault();
 
