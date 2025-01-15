@@ -38,7 +38,6 @@ document.querySelector('.form').addEventListener('submit', () => {
         color: '#ef4040',
         });
          });
-    
     document.querySelector('.form').reset();
 });
     
