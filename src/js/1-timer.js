@@ -7,8 +7,9 @@ const options = {
   disableMobile: true,
   time_24hr: true,
   locale: {
+    firstDayOfWeek: 1,
     weekdays: {
-      shorthand: ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"], 
+      shorthand: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"], 
       longhand: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     },
     months: {
@@ -22,10 +23,13 @@ const options = {
     userSelectedDate = selectedDates[0]; // Отримання першої обраної дати
 
     if (userSelectedDate <= Date.now()) { //Перевірка валідності дати
-        iziToast.warning({
-        title: "Warning",
-        message: "Please choose a date in the future",
-        position: 'bottomCenter',
+        iziToast.error({
+         title: "Error",
+        titleColor: '#fff',
+        message: `Please choose a date in the future`,
+        messageColor: '#fff',
+        position: 'topRight',
+        color: '#ef4040',
       });
         startBtn.disabled = true; //Якщо дата минула, кнопка деактивована
     } else {
@@ -48,10 +52,13 @@ startBtn.addEventListener('click', () => { // При натисканні на �
     if (userSelectedDate) {
         startCountDown(userSelectedDate);
     }
-    iziToast.info({
-        title: "Info",
-        message: "Timer started",
-        position: 'bottomCenter',
+    iziToast.success({
+        title: "OK",
+        titleColor: '#fff',
+        message: `Timer started`,
+        messageColor: '#fff',
+        position: 'topRight',
+        color: '#59a10d',
       });
     startBtn.disabled = true;
      dateTimePicker.forEach(input => {
@@ -65,11 +72,6 @@ function startCountDown(userSelectedDate) { // Функція для почат�
       
      if (ms <= 0) {
         clearInterval(interval);
-         iziToast.success({
-        title: "Success",
-        message: "Time over",
-        position: 'bottomCenter',
-      });
         dateTimePicker.forEach(input => {
         input.disabled = false;
     }); 
