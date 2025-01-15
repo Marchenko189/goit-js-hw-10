@@ -42,4 +42,3 @@ document.querySelector('.form').addEventListener('submit', () => {
     document.querySelector('.form').reset();
 });
     
-console.dir(iziToast.success);

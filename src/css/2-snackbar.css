@@ -105,12 +105,3 @@
 .btn-snack:hover, .btn-snack:focus {
     background: #6c8cff;
 }
-
-.iziToast.success {
-    /* color: #59a10d; */
-    
-    background-color: #28a745;
-        /* Зелений фон для успіху */
-        color: white;
-        
-}
